@@ -14,10 +14,10 @@
 <form method=post enctype=multipart/form-data>
     <div>
         <p>Select a file to upload:</p>
-        <input type="file" onchange="readURL(this)" name="file" id="in"/>
+        <input type="file" onchange="readURL(this)" name="file" required/>
     </div>
-    <div  ondrop="drop(event)" ondragover="allowDrop(event)" style="border:dashed;border-color:red;" id="dropBox">
-        <img id="targ" src="#" alt="Or drag an image here!" style="max-height:400px;max-width:300px;"/>
+    <div  ondrop="drop(event)" ondragover="allowDrop(event)" style="border:dashed;border-color:red;width:310px;height:410px;" id="dropBox">
+        <img id="targ" src="#" alt="preview your image here!" style="max-height:400px;max-width:300px;"/>
     </div>
     <input type="submit" value="Upload" />
 </form>
@@ -33,17 +33,16 @@
         ev.preventDefault();
 
         if (ev.dataTransfer.items) {
-            console.log('Hello');
-            console.log(document.body.style.backgroundColor);
             // Use DataTransferItemList interface to access the file(s)
             for (var i = 0; i < ev.dataTransfer.items.length; i++) {
                 // If dropped items aren't files, reject them
                 if (ev.dataTransfer.items[i].kind === 'file') {
                     var file = ev.dataTransfer.items[i].getAsFile();
+                    let formData = new FormData();
+
                     console.log('... file[' + i + '].name = ' + file.name);
-                    if (i == 0)
-                        document.getElementById('drag').innerHTML = file.name;
-                    document.getElementById('in').files[i] = file;
+                    formData.append('file', file);
+                    
                 }
             }
         } else {
